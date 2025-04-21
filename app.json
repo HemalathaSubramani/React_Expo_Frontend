@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "MediaErp",
+    "slug": "AgentInfoApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/newspaperlogo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/newspaperlogo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.MediaErp.Application",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.MediaErp.Application",
+      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"],
+      "versionCode": 1,
+      "applicationName": "MediaErp" 
+    },
+    "web": {
+      "favicon": "./assets/newspaperlogo.png"
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b7d673c8-9d5a-4004-9f25-461cb0e4ec02"
+      }
+    }
+  }
+}
