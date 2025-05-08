@@ -136,6 +136,59 @@ const styles = StyleSheet.create({
       marginBottom: 12,
       fontFamily: 'Arial', // Use system font for better performance
       lineHeight: 22, // Line height for better spacing
+    },
+    logout: {
+      flexDirection: 'row',
+      paddingVertical: 6,
+      backgroundColor: '#f44336', // Modern red
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 3,
+      elevation: 5,
+    },
+    tableHeader: {
+      flexDirection: 'row',
+      borderBottomWidth: 1,
+      paddingBottom: 8,
+      marginTop: 16,
+      backgroundColor: '#007bff',
+      paddingHorizontal: 10,
+    },
+    tableHeaderText: {
+      flex: 1,
+      fontWeight: 'bold',
+      fontSize: 16,
+      color: 'white',
+    },
+    tableRow: {
+      flexDirection: 'row',
+      paddingVertical: 10,
+      paddingHorizontal: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+    },
+    tableCell: {
+      flex: 1,
+      fontSize: 15,
+    },    
+    totalRow: {
+      flexDirection: 'row',
+      marginTop: 10,
+      paddingTop: 10,
+      borderTopWidth: 1,
+      borderTopColor: '#000',
+    },
+    totalLabel: {
+      flex: 1,
+      fontWeight: 'bold',
+      fontSize: 16,
+    },
+    totalValue: {
+      flex: 1,
+      fontWeight: 'bold',
+      fontSize: 16,
     }
   });
   export default styles;

@@ -21,6 +21,7 @@
     },
     "android": {
       "package": "com.MediaErp.Application",
+      "icon": "./assets/newspaperlogo.png",
       "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"],
       "versionCode": 1,
       "applicationName": "MediaErp" 

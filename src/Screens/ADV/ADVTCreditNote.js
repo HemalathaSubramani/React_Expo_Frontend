@@ -1,16 +1,16 @@
-import React, { useState, useEffect ,useLayoutEffect} from "react";
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
+import React ,{useState, useEffect, useLayoutEffect}from "react";
+import {Text, View, TouchableOpacity, ScrollView, ActivityIndicator} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 import styles from '../../Styles/Styles';
 
-const API_BASE_URL = "https://react-expo-javabackend.onrender.com";
+const API_BASE_URL = __DEV__ ? "http://192.168.10.71:8081" : "https://react-expo-javabackend.onrender.com";
 
-const FACBalanceDetails = ({ route, navigation }) => {
-    const [date, setDate] = useState(null);  // Initialize date to null
-    const [loading, setLoading] = useState(false);
-    const [showDatePicker, setShowDatePicker] = useState(false);
-    const [data, setData] = useState([]);
+const ADVTCreditNote = ({route, navigation}) => {
+    const[date, setDate] = useState(null);
+    const[loading, setLoading] = useState(false);
+    const[showDatePicker, setShowDatePicker] = useState(false);
+    const[data, setData] = useState([]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -38,42 +38,49 @@ const FACBalanceDetails = ({ route, navigation }) => {
         setDate(date); // Set the selected date
     };
 
-    useEffect(() => {
-        if (date) {
-            const fetchDayDetails = async () => {
-                try {
-                    setLoading(true);
-                    const response = await fetch(`${API_BASE_URL}/fac/bal/${date.toISOString().split('T')[0]}`);
-                    const responseData = await response.json();
-                    // console.log(">>>"+JSON.stringify(responseData,null,2))
-                    if(Array.isArray(responseData)){
-                        setData(responseData); // Assuming the response contains an array of data
-                    }
-                    else{
-                        setData([]);
-                    }
-                    
-                } catch (error) {
-                    console.log('Error: No Data available');
-                } finally {
-                    setLoading(false);
-                }
+    const fetchCreditDetails = async() => {
+        try{
+            setLoading(false);
+            const response = await fetch(`${API_BASE_URL}/advt/credit/${date.toISOString().split('T')[0]}`);
+            const responseData = await response.json();
+            if(Array.isArray(responseData)){
+                setData(responseData);
             }
-            fetchDayDetails();
+            else if (!isNaN(responseData)) {
+                // If API returned a single number
+                setData([{ data: responseData }]);
+            }
+            else
+            {
+                setData([]);
+            }
         }
-    }, [date]);  // Update the dependency to `date` instead of `setDate`
-
-    const handleBackPress = () => {
-        setDate(null);  // Reset the selected date
-        navigation.navigate('FACDayBookReport');  // Navigate explicitly to the Select Date screen
+        catch(error){
+            console.log("No Data Available");
+        }
+        finally{
+            setLoading(false);
+        }
     };
 
-    if (!date) {
-        return (
+    useEffect(() => {
+        if(date){
+            fetchCreditDetails();
+        }
+    },[date]);
+
+    const handleBackPress = () => {
+        setDate(null);  
+        setShowDatePicker(false);// Reset the selected date
+        navigation.goBack();  // Navigate explicitly to the Select Date screen
+    };
+
+    if(!date){
+        return(
             <View style={styles.containerCenter}>
-                <Text style={styles.header}>Please select a date</Text>
+                <Text style={styles.header}>Please Select a Date</Text>
                 <TouchableOpacity style={styles.button} onPress={() => setShowDatePicker(true)}>
-                    <Text style={styles.buttonText}>Select Date</Text>
+                    <Text style={styles.buttonText}>Select a Date</Text>
                 </TouchableOpacity>
 
                 {/* Date Picker */}
@@ -92,33 +99,30 @@ const FACBalanceDetails = ({ route, navigation }) => {
                 )}
             </View>
         );
-    }
+    };
 
     if (loading) {
         return <ActivityIndicator size="large" color="#007bff" style={styles.loading} />;
     }
 
     if(data.length === 0){
-        return(
-            <View style={styles.containerCenter}>
-                <Ionicons name="sad" size={28} color="red" />
-                <Text style={styles.header}>No Book Balance found for</Text>
-                <Text style={styles.header}>{formatDate(date)}</Text>
-            </View>
-        );
+        <View style={styles.containerCenter}>
+        <Ionicons name="sad" size={28} color="red"></Ionicons>
+        <Text style={styles.header}>No Credit Amount found on</Text>
+        <Text style={styles.header}>{formatDate(date)}</Text>
+    </View>
     }
 
-    return (
+    return(
         <View style={styles.containerCenter}>
             <View style={styles.dateContainer}>
-                <Text style={styles.header}>Total Pay Amount for</Text>
+                <Text style={styles.header}>Total Collection Amount on</Text>
                 <Text style={styles.header}>{formatDate(date)}</Text>
             </View>
             <ScrollView>
-                {data.map((item, index) => (
+                {data.map((item,index) => (
                     <View key={index} style={styles.supplyCard}>
-                        <Text style={styles.supplyText}>Debit Amount: {item.mldgname}</Text>
-                        <Text style={styles.supplyText}>Credit Amount: {parseFloat(item.balance).toFixed(2)}</Text>
+                        <Text style={styles.supplyText}>Credit Amount: {parseFloat(item.data).toFixed(2)}</Text>
                         <View style={styles.divider} />
                     </View>
                 ))}
@@ -126,5 +130,5 @@ const FACBalanceDetails = ({ route, navigation }) => {
         </View>
     );
 };
+export default ADVTCreditNote;
 
-export default FACBalanceDetails;

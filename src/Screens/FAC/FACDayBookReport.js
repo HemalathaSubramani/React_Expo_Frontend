@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useLayoutEffect} from "react";
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import styles from '../../Styles/Styles';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native'; // Import the useFocusEffect hook
 
-const API_BASE_URL = "http://192.168.10.71:8081";
+const API_BASE_URL = "https://react-expo-javabackend.onrender.com";
 
 const FACDayBookReport = ({ route, navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);  // Start with null until a date is selected
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [showDatePicker, setShowDatePicker] = useState(false);  // To control DatePicker visibility
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+        headerRight: () => (
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Login')}
+                style={[{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }, styles.logout]}
+            >
+                <Ionicons name="log-out-outline" size={22} color="#000" />
+                <Text style={{ color: '#000', marginLeft: 6 }}>Logout</Text>
+            </TouchableOpacity>
+        ),
+    });
+}, [navigation]);
 
   const formatDate = (date) => {
     return new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit' }).format(date);

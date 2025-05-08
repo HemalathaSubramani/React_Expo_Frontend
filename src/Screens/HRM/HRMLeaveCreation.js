@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useLayoutEffect} from 'react';
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Assuming you are using expo
 import DateTimePicker from '@react-native-community/datetimepicker';
 import styles from '../../Styles/Styles';
 
-const API_BASE_URL = "http://192.168.10.71:8081";
+const API_BASE_URL = "https://react-expo-javabackend.onrender.com";
 
-const HRMLeaveCreation = ({ route }) => {
+const HRMLeaveCreation = ({ route ,navigation}) => {
     const [data, setData] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null); // Initially, no date is selected
     const [loading, setLoading] = useState(true);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [leaveDays, setLeaveDays] = useState(null);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Login')}
+                    style={[{ flexDirection: 'row', alignItems: 'center', marginRight: 16 }, styles.logout]}
+                >
+                    <Ionicons name="log-out-outline" size={22} color="#000" />
+                    <Text style={{ color: '#000', marginLeft: 6 }}>Logout</Text>
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
 
     const formatDate = (date) => {
         return new Intl.DateTimeFormat('en-GB', { year: 'numeric', month: 'short', day: '2-digit' }).format(date);
