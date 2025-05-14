@@ -5,7 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from '@react-navigation/native'; // Import the useFocusEffect hook
 
-const API_BASE_URL = "https://react-expo-javabackend.onrender.com";
+const API_BASE_URL = __DEV__ ? "http://192.168.10.71:8081" : "https://react-expo-javabackend.onrender.com"
 
 const FACDayBookReport = ({ route, navigation }) => {
   const [selectedDate, setSelectedDate] = useState(null);  // Start with null until a date is selected
@@ -118,16 +118,26 @@ const FACDayBookReport = ({ route, navigation }) => {
           onChange={handleDateSelect}
         />
       )}
+      <View style={styles.tableHeader}>
+        <Text style={styles.tableHeaderText}>Ledger Type</Text>
+        <Text style={styles.tableHeaderText}>Credit Amount</Text>
+        <Text style={styles.tableHeaderText}>Debit Amount</Text>
+      </View>
 
-      <ScrollView>
+      <ScrollView style={{width: '100%'}}>
         {data.map((item, index) => (
-          <View key={index} style={styles.supplyCard}>
-            <Text style={styles.supplyText}>Debit Amount: {parseFloat(item.tjoddbamt).toFixed(2)}</Text>
-            <Text style={styles.supplyText}>Credit Amount: {parseFloat(item.tjodcramt).toFixed(2)}</Text>
-            <Text style={styles.supplyText}>Ledger Type: {item.mldgcbg}</Text>
-            <View style={styles.divider} />
+          <View key={index} style={styles.tableRow}>
+            <View style={styles.tableCellWithBorder}>
+              <Text style={styles.tableCell}>{item.mldgcbg == 'B' ? "Bank" : "Cash"}</Text>
+            </View>
+            <View style={styles.tableCellWithBorder}>
+              <Text style={styles.tableCell}>{parseFloat(item.tjodcramt).toFixed(2)}</Text>
+            </View>
+            <View style={styles.tableCellWithBorder}>
+              <Text style={styles.tableCell}>{parseFloat(item.tjoddbamt).toFixed(2)}</Text>
+            </View>
           </View>
-        ))}
+        ))};
       </ScrollView>
     </View>
   );

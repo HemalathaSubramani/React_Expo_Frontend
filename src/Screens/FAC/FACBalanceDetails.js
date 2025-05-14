@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 import styles from '../../Styles/Styles';
 
-const API_BASE_URL = "https://react-expo-javabackend.onrender.com";
+const API_BASE_URL = __DEV__ ? "http://192.168.10.71:8081" : "https://react-expo-javabackend.onrender.com";
 
 const FACBalanceDetails = ({ route, navigation }) => {
     const [date, setDate] = useState(null);  // Initialize date to null
@@ -110,19 +110,37 @@ const FACBalanceDetails = ({ route, navigation }) => {
 
     return (
         <View style={styles.containerCenter}>
-            <View style={styles.dateContainer}>
                 <Text style={styles.header}>Total Pay Amount for</Text>
                 <Text style={styles.header}>{formatDate(date)}</Text>
-            </View>
-            <ScrollView>
-                {data.map((item, index) => (
-                    <View key={index} style={styles.supplyCard}>
-                        <Text style={styles.supplyText}>Debit Amount: {item.mldgname}</Text>
-                        <Text style={styles.supplyText}>Credit Amount: {parseFloat(item.balance).toFixed(2)}</Text>
-                        <View style={styles.divider} />
-                    </View>
-                ))}
-            </ScrollView>
+
+                <View style={styles.tableHeader}>
+                    <Text style={styles.tableHeaderText}>Bank</Text>
+                    <Text style={styles.tableHeaderText}>Debit Amount</Text>
+                    <Text style={styles.tableHeaderText}>Credit Amount</Text>
+                </View>
+
+                <ScrollView style={{width: '100%'}}>
+                    {data.map((item, index) => {
+                        const balance = parseFloat(item.balance).toFixed(2);
+                        const isDebit = balance >=0;
+                        const debitAmount = isDebit ? balance : 0.00;
+                        const creditAmount = !isDebit ? Math.abs(balance).toFixed(2) : 0.00;
+                        return(
+                        <View key={index} style={styles.tableRow}>
+                            <View style={styles.tableCellWithBorder}>
+                                <Text style={styles.tableCell}>{item.mldgname}</Text>
+                            </View>
+                            <View style={styles.tableCellWithBorder}>
+                                <Text style={styles.tableCell}>{debitAmount}</Text>
+                            </View>
+                            <View style={styles.tableCellWithBorder}>
+                                <Text style={styles.tableCell}>{creditAmount}</Text>
+                            </View>
+                        </View>
+                    )
+                })}
+                </ScrollView>
+            
         </View>
     );
 };

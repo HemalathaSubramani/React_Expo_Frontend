@@ -37,7 +37,7 @@ const Stack = createStackNavigator();
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState(false);
+  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

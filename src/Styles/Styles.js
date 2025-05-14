@@ -189,6 +189,14 @@ const styles = StyleSheet.create({
       flex: 1,
       fontWeight: 'bold',
       fontSize: 16,
-    }
+    },
+    tableCellWithBorder: {
+  width: '33%',
+  alignItems: 'left',
+  justifyContent: 'center',
+  paddingVertical: 10,
+  borderRightWidth: 1,
+  borderRightColor: '#ccc',
+}
   });
   export default styles;

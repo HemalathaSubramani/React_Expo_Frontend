@@ -2,7 +2,7 @@ import React, {useState, useEffect, useLayoutEffect} from 'react';
 import {View, TouchableOpacity, Text} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import styles from '../../Styles/Styles';
-const API_BASE_URL = "https://react-expo-javabackend.onrender.com";
+const API_BASE_URL = __DEV__ ? "http://192.168.10.71:8081" : "https://react-expo-javabackend.onrender.com"
 const FACDayBookAndBalance = ({navigation}) =>
 {
     useLayoutEffect(() => {

@@ -105,13 +105,13 @@ const ADVTCreditNote = ({route, navigation}) => {
         return <ActivityIndicator size="large" color="#007bff" style={styles.loading} />;
     }
 
-    if(data.length === 0){
+    if(data.length === 0)(
         <View style={styles.containerCenter}>
         <Ionicons name="sad" size={28} color="red"></Ionicons>
         <Text style={styles.header}>No Credit Amount found on</Text>
         <Text style={styles.header}>{formatDate(date)}</Text>
     </View>
-    }
+    );
 
     return(
         <View style={styles.containerCenter}>
